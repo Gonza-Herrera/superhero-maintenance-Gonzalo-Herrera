@@ -1,0 +1,12 @@
+<form (ngSubmit)="onSubmit()">
+    <label>
+      Nombre:
+      <input type="text" [(ngModel)]="hero.name" name="name" required>
+    </label>
+    <label>
+      Poder:
+      <input type="text" [(ngModel)]="hero.power" name="power" required>
+    </label>
+    <button type="submit">{{ hero.id ? 'Actualizar' : 'Añadir' }}</button>
+    <button type="button" (click)="cancel.emit()">Cancelar</button>
+  </form>
