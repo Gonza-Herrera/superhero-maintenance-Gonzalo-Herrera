@@ -4,11 +4,19 @@
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Nombre</mat-label>
       <input matInput formControlName="name" />
+      <!-- Mensaje de error para el campo 'name' -->
+      <mat-error *ngIf="heroForm.get('name')?.touched && heroForm.get('name')?.hasError('required')">
+        El nombre es obligatorio
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Poder</mat-label>
       <input matInput formControlName="power" />
+      <!-- Mensaje de error para el campo 'power' -->
+      <mat-error *ngIf="heroForm.get('power')?.touched && heroForm.get('power')?.hasError('required')">
+        El poder es obligatorio
+      </mat-error>
     </mat-form-field>
 
     <mat-card-actions class="button-container">
