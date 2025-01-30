@@ -39,8 +39,7 @@ export default class HeroesListComponent {
 
   constructor(
     private heroService: HeroService,
-    private router: Router,
-    public dialog: MatDialog
+    private router: Router
   ) {
     this.heroService.getHeroes().subscribe(heroes => {
       this.heroes = heroes;
@@ -71,26 +70,6 @@ export default class HeroesListComponent {
       this.currentPage--;
     }
   }
-
-  /* openForm(): void {
-    const dialogRef = this.dialog.open(HeroFormComponent, {
-      width: '400px',
-      data: { hero: { id: 0, name: '', power: '' } }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) this.heroService.addHero(result);
-    });
-  }
-
-  editHero(hero: Hero): void {
-    const dialogRef = this.dialog.open(HeroFormComponent, {
-      width: '400px',
-      data: { hero: { ...hero } }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) this.heroService.updateHero(result);
-    });
-  } */
 
   deleteHero(id: number): void {
     this.heroService.deleteHero(id);

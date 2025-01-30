@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Hero } from '../models/superhero.model';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class HeroService {
@@ -16,8 +16,9 @@ export class HeroService {
     return this.heroesSubject.asObservable();
   }
 
-  getHeroById(id: number): Hero | undefined {
-    return this.heroes.find(hero => hero.id === id);
+  getHeroById(id: number): Observable<Hero> {
+    const hero = this.heroes.find(hero => hero.id === id);
+    return of(hero!);
   }
 
   searchHeroes(query: string): Hero[] {
@@ -35,7 +36,7 @@ export class HeroService {
       this.heroes[index] = updatedHero;
       this.heroesSubject.next(this.heroes);
     }
-  }
+  }  
 
   deleteHero(id: number): void {
     this.heroes = this.heroes.filter(hero => hero.id !== id);
