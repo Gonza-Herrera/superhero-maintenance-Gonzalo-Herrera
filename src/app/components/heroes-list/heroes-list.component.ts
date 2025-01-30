@@ -11,6 +11,7 @@ import { HeroService } from '../../services/superhero.service';
 import { Hero } from '../../models/superhero.model';
 import { FormsModule } from '@angular/forms';
 import HeroFormComponent from '../../forms/hero-form/hero-form.component';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-heroes-list',
@@ -39,7 +40,8 @@ export default class HeroesListComponent {
 
   constructor(
     private heroService: HeroService,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) {
     this.heroService.getHeroes().subscribe(heroes => {
       this.heroes = heroes;
@@ -71,9 +73,17 @@ export default class HeroesListComponent {
     }
   }
 
-  deleteHero(id: number): void {
-    this.heroService.deleteHero(id);
-    this.applyFilter();
+  deleteHero(hero: Hero): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: { heroName: hero.name }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.heroService.deleteHero(hero.id);
+        this.applyFilter();
+      }
+    });
   }
 
    openForm(): void {
