@@ -72,7 +72,7 @@ export default class HeroesListComponent {
     }
   }
 
-  openForm(): void {
+  /* openForm(): void {
     const dialogRef = this.dialog.open(HeroFormComponent, {
       width: '400px',
       data: { hero: { id: 0, name: '', power: '' } }
@@ -90,18 +90,18 @@ export default class HeroesListComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (result) this.heroService.updateHero(result);
     });
-  }
+  } */
 
   deleteHero(id: number): void {
     this.heroService.deleteHero(id);
     this.applyFilter();
   }
 
-  /* openForm(): void {
+   openForm(): void {
     this.router.navigate(['/heroes/new']);
   }
   
   editHero(hero: Hero): void {
     this.router.navigate([`/heroes/edit/${hero.id}`]);
-  } */
+  } 
 }

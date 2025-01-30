@@ -1,12 +1,23 @@
-<form (ngSubmit)="onSubmit()">
-    <label>
-      Nombre:
-      <input type="text" [(ngModel)]="hero.name" name="name" required>
-    </label>
-    <label>
-      Poder:
-      <input type="text" [(ngModel)]="hero.power" name="power" required>
-    </label>
-    <button type="submit">{{ hero.id ? 'Actualizar' : 'Añadir' }}</button>
-    <button type="button" (click)="cancel.emit()">Cancelar</button>
+<mat-card class="hero-form-card">
+  <mat-card-title class="card-title">{{ hero ? 'Editar Héroe' : 'Agregar Héroe' }}</mat-card-title>
+  <form [formGroup]="heroForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Poder</mat-label>
+      <input matInput formControlName="power" />
+    </mat-form-field>
+
+    <mat-card-actions class="button-container">
+      <button mat-raised-button color="primary" type="submit" [disabled]="heroForm.invalid">
+        Guardar
+      </button>
+      <button mat-stroked-button color="warn" type="button" (click)="onCancel()">
+        Cancelar
+      </button>
+    </mat-card-actions>
   </form>
+</mat-card>

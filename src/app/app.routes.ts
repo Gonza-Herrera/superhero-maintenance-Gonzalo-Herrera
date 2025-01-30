@@ -6,11 +6,11 @@ export const routes: Routes = [
       loadComponent: () => import('./components/heroes-list/heroes-list.component')
     },
     {
-      path: 'hero/new',
+      path: 'heroes/new',
       loadComponent: () => import('./forms/hero-form/hero-form.component')
     },
     {
-      path: 'hero/edit/:id',
+      path: 'heroes/edit/:id',
       loadComponent: () => import('./forms/hero-form/hero-form.component')
     },
     { path: '**', redirectTo: 'heroes' }
