@@ -1,0 +1,52 @@
+<div class="hero-container">
+  <mat-form-field appearance="outline">
+    <mat-label>Buscar héroe</mat-label>
+    <input matInput [(ngModel)]="searchTerm" (input)="applyFilter()" />
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="openForm()">
+    Añadir Héroe
+  </button>
+</div>
+
+<!-- Mostrar mensaje si no hay resultados -->
+<div *ngIf="filteredHeroes.length === 0 && searchTerm">
+  <p>No hay resultados para la búsqueda: "{{ searchTerm }}"</p>
+</div>
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <!-- Generación dinámica de columnas (excluyendo 'actions') -->
+  <ng-container *ngFor="let column of displayedColumns">
+    <ng-container *ngIf="column !== 'actions'">
+      <ng-container [matColumnDef]="column">
+        <th mat-header-cell *matHeaderCellDef>{{ column | titlecase }}</th>
+        <td mat-cell *matCellDef="let hero">{{ hero[column] }}</td>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+
+  <!-- Columna de acciones (definida manualmente) -->
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef>Acciones</th>
+    <td mat-cell *matCellDef="let hero">
+      <button mat-icon-button color="accent" (click)="editHero(hero)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="deleteHero(hero)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <!-- Filas de encabezado y datos -->
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+
+<!-- Paginación -->
+<mat-paginator
+  [length]="filteredHeroes.length"
+  [pageSize]="5"
+  [pageSizeOptions]="[5, 10, 20]"
+  (page)="applyPagination($event)"
+>
+</mat-paginator>
