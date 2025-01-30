@@ -10,7 +10,7 @@ import { Hero } from '../../models/superhero.model';
   templateUrl: './hero-form.component.html',
   styleUrl: './hero-form.component.scss'
 })
-export class HeroFormComponent {
+export default class HeroFormComponent {
   @Input() hero: Hero = { id: 0, name: '', power: '' };
   @Output() save = new EventEmitter<Hero>();
   @Output() cancel = new EventEmitter<void>();

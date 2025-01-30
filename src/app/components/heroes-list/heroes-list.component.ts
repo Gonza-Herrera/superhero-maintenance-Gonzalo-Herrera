@@ -1,12 +1,16 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
+import {MatIconModule} from '@angular/material/icon';
+import {MatToolbarModule} from '@angular/material/toolbar';
 import { HeroService } from '../../services/superhero.service';
 import { Hero } from '../../models/superhero.model';
-import { HeroFormComponent } from '../../forms/hero-form/hero-form.component';
+import { FormsModule } from '@angular/forms';
+import HeroFormComponent from '../../forms/hero-form/hero-form.component';
 
 @Component({
   selector: 'app-heroes-list',
@@ -17,12 +21,15 @@ import { HeroFormComponent } from '../../forms/hero-form/hero-form.component';
     MatButtonModule,
     MatDialogModule,
     MatInputModule,
+    FormsModule,
+    MatIconModule,
+    MatToolbarModule,
     HeroFormComponent
   ],
   templateUrl: './heroes-list.component.html',
-  styleUrls: ['./heroes-list.component.css']
+  styleUrls: ['./heroes-list.component.scss']
 })
-export class HeroesListComponent {
+export default class HeroesListComponent {
   heroes: Hero[] = [];
   filteredHeroes: Hero[] = [];
   searchTerm: string = '';
@@ -30,7 +37,11 @@ export class HeroesListComponent {
   itemsPerPage: number = 5;
   displayedColumns: string[] = ['name', 'power', 'actions'];
 
-  constructor(private heroService: HeroService, public dialog: MatDialog) {
+  constructor(
+    private heroService: HeroService,
+    private router: Router,
+    public dialog: MatDialog
+  ) {
     this.heroService.getHeroes().subscribe(heroes => {
       this.heroes = heroes;
       this.applyFilter();
@@ -85,4 +96,12 @@ export class HeroesListComponent {
     this.heroService.deleteHero(id);
     this.applyFilter();
   }
+
+  /* openForm(): void {
+    this.router.navigate(['/heroes/new']);
+  }
+  
+  editHero(hero: Hero): void {
+    this.router.navigate([`/heroes/edit/${hero.id}`]);
+  } */
 }

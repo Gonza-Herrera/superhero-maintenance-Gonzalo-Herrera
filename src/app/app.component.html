@@ -1,1 +1,13 @@
-<router-outlet></router-outlet>
+<mat-toolbar color="primary">
+  <span>Superhéroes</span>
+  <span class="spacer"></span>
+  <button mat-button routerLink="/heroes">Lista de Héroes</button>
+</mat-toolbar>
+
+<div class="loading-container" *ngIf="isLoading | async">
+  <mat-spinner diameter="50"></mat-spinner>
+</div>
+
+<div class="content">
+  <router-outlet></router-outlet>
+</div>
