@@ -16,7 +16,7 @@ export class HeroService {
     return this.heroesSubject.asObservable();
   }
 
-  getHeroesSnapshot(): Hero[] {  // Nueva función para acceder directamente al valor de los héroes
+  getHeroesSnapshot(): Hero[] {
     return this.heroesSubject.value;
   }
 
