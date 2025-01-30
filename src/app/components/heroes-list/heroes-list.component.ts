@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
@@ -12,6 +12,7 @@ import { Hero } from '../../models/superhero.model';
 import { FormsModule } from '@angular/forms';
 import HeroFormComponent from '../../forms/hero-form/hero-form.component';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-heroes-list',
@@ -25,18 +26,20 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
     FormsModule,
     MatIconModule,
     MatToolbarModule,
-    HeroFormComponent
+    HeroFormComponent,
+    MatPaginatorModule
   ],
   templateUrl: './heroes-list.component.html',
   styleUrls: ['./heroes-list.component.scss']
 })
-export default class HeroesListComponent {
+export default class HeroesListComponent implements AfterViewInit {
   heroes: Hero[] = [];
   filteredHeroes: Hero[] = [];
   searchTerm: string = '';
-  currentPage: number = 1;
-  itemsPerPage: number = 5;
   displayedColumns: string[] = ['name', 'power', 'actions'];
+  dataSource = new MatTableDataSource<Hero>(this.filteredHeroes);
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     private heroService: HeroService,
@@ -49,29 +52,23 @@ export default class HeroesListComponent {
     });
   }
 
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+  }
+
   applyFilter(): void {
     this.filteredHeroes = this.heroes.filter(hero =>
       hero.name.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
-    this.currentPage = 1;
+    this.dataSource.data = this.filteredHeroes;
   }
 
-  get paginatedHeroes(): Hero[] {
-    const start = (this.currentPage - 1) * this.itemsPerPage;
-    return this.filteredHeroes.slice(start, start + this.itemsPerPage);
+  applyPagination(event: any): void {
+    const start = event.pageIndex * event.pageSize;
+    const end = start + event.pageSize;
+    this.dataSource.data = this.filteredHeroes.slice(start, end);
   }
-
-  nextPage(): void {
-    if ((this.currentPage * this.itemsPerPage) < this.filteredHeroes.length) {
-      this.currentPage++;
-    }
-  }
-
-  prevPage(): void {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-    }
-  }
+  
 
   deleteHero(hero: Hero): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -86,11 +83,11 @@ export default class HeroesListComponent {
     });
   }
 
-   openForm(): void {
+  openForm(): void {
     this.router.navigate(['/heroes/new']);
   }
-  
+
   editHero(hero: Hero): void {
     this.router.navigate([`/heroes/edit/${hero.id}`]);
-  } 
+  }
 }
