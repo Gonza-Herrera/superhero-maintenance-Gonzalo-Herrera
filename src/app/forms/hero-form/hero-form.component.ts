@@ -69,7 +69,7 @@ export default class HeroFormComponent {
 
   private generateNewId(): number {
     // Generamos un nuevo ID para el nuevo héroe basado en el mayor ID actual + 1
-    const maxId = Math.max(...this.heroService.getHeroesSnapshot().map(hero => hero.id), 0);  // Cambiar esta línea
+    const maxId = Math.max(...this.heroService.getHeroesSnapshot().map(hero => hero.id), 0); 
     return maxId + 1;
   }  
   
