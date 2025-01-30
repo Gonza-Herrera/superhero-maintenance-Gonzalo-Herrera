@@ -35,6 +35,7 @@ export default class HeroFormComponent {
   }
 
   ngOnInit() {
+    // Si estamos editando un héroe, cargamos su información
     const heroId = this.route.snapshot.paramMap.get('id');
     if (heroId) {
       this.heroService.getHeroById(Number(heroId)).subscribe(hero => {
@@ -45,18 +46,31 @@ export default class HeroFormComponent {
   }
 
   onSubmit() {
-    if (this.heroForm.valid && this.hero) {
-      // Actualizamos los datos del héroe en el HeroService
-      const updatedHero = { ...this.hero, ...this.heroForm.value };
-      this.heroService.updateHero(updatedHero);
+    if (this.heroForm.valid) {
+      if (this.hero) {
+        // Si estamos editando un héroe, actualizamos
+        const updatedHero = { ...this.hero, ...this.heroForm.value };
+        this.heroService.updateHero(updatedHero);
+      } else {
+        // Si estamos agregando un nuevo héroe
+        const newHero = { ...this.heroForm.value, id: this.generateNewId() }; // Generamos un ID para el nuevo héroe
+        this.heroService.addHero(newHero);
+      }
 
-      // Redirigimos a la lista de héroes después de la actualización
+      // Redirigimos a la lista de héroes después de agregar o actualizar
       this.router.navigate(['/heroes']);
     }
   }
 
   onCancel() {
     this.cancel.emit();
-    this.router.navigate(['/heroes']);
+    this.router.navigate(['/heroes']); // Redirige a la lista de héroes al cancelar
   }
+
+  private generateNewId(): number {
+    // Generamos un nuevo ID para el nuevo héroe basado en el mayor ID actual + 1
+    const maxId = Math.max(...this.heroService.getHeroesSnapshot().map(hero => hero.id), 0);  // Cambiar esta línea
+    return maxId + 1;
+  }  
+  
 }

@@ -16,6 +16,10 @@ export class HeroService {
     return this.heroesSubject.asObservable();
   }
 
+  getHeroesSnapshot(): Hero[] {  // Nueva función para acceder directamente al valor de los héroes
+    return this.heroesSubject.value;
+  }
+
   getHeroById(id: number): Observable<Hero> {
     const hero = this.heroes.find(hero => hero.id === id);
     return of(hero!);
@@ -26,9 +30,9 @@ export class HeroService {
   }
 
   addHero(hero: Hero): void {
-    this.heroes.push(hero);
-    this.heroesSubject.next(this.heroes);
-  }
+    this.heroes.push(hero); // Añade el nuevo héroe al arreglo
+    this.heroesSubject.next(this.heroes); // Notifica a los suscriptores de la nueva lista de héroes
+  }  
 
   updateHero(updatedHero: Hero): void {
     const index = this.heroes.findIndex(h => h.id === updatedHero.id);
