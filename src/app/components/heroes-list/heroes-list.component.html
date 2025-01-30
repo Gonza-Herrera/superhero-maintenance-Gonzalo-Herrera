@@ -6,6 +6,11 @@
     <button mat-raised-button color="primary" (click)="openForm()">Añadir Héroe</button>
   </div>
 
+  <!-- Mostrar mensaje si no hay resultados -->
+<div *ngIf="filteredHeroes.length === 0 && searchTerm">
+  <p>No hay resultados para la búsqueda: "{{ searchTerm }}"</p>
+</div>
+
   <table mat-table [dataSource]="paginatedHeroes" class="mat-elevation-z8">
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef> Nombre </th>
